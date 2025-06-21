@@ -35,3 +35,9 @@ logs/
 # Ignore virtual environments (se usar Python depois)
 venv/
 .env/
+
+
+# Terraform state and providers
+*.tfstate
+*.tfstate.*
+.terraform/
