@@ -79,6 +79,63 @@ Database: projeto_sp
 User: adminuser
 Password: adminpassword
 ```
+## MinIO Deployment Details
+
+### 1. Helm Chart used:
+
+Bitnami MinIO chart
+
+### 2. Custom values.yaml used:
+
+**Path:** `infra/helm/minio/values.yaml`
+
+
+### 3. Installation command:
+
+```
+helm install meu-minio bitnami/minio --namespace infra -f infra/helm/minio/values.yaml
+```
+
+Or if upgrading:
+
+```
+helm upgrade meu-minio bitnami/minio --namespace infra -f infra/helm/minio/values.yaml
+```
+
+### 4. Accessing MinIO Web Console:
+
+Forward port **9090**:
+
+```
+kubectl port-forward pod/<minio-console-pod-name> 9090:9090 -n infra
+```
+
+Example:
+
+```
+kubectl port-forward pod/meu-minio-console-xxxxxxx 9090:9090 -n infra
+```
+
+Then open:
+
+```
+http://localhost:9090
+```
+
+**Login credentials:**
+
+- **Username:** `minioadmin`
+- **Password:** `minioadmin123`
+
+You should now see the MinIO Object Store Console and be able to create buckets for your Bronze layer data storage.
+
+---
+## Next steps (suggestions):
+
+- Create buckets (e.g., `bronze`, `silver`, `gold`)
+- Prepare Python scripts for data ingestion
+- Deploy Apache Airflow for orchestration
+- Begin loading public datasets into MinIO
 
 ## Current project status:
 
@@ -88,3 +145,4 @@ Password: adminpassword
 | Namespaces  | ✅ Created |
 | Nginx       | ✅ Deployed and tested |
 | PostgreSQL  | ✅ Deployed via Helm with custom values.yaml |
+| MinIO       | ✅ Deployed via Helm with web console accessible on port 9090 |
