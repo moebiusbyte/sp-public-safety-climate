@@ -31,43 +31,6 @@ kubectl create namespace gold
 
 **File:** `infra/manifests/nginx-deploy.yaml`
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deploy
-  namespace: infra
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx-container
-        image: nginx:latest
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-  namespace: infra
-spec:
-  selector:
-    app: nginx
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-  type: ClusterIP
-```
-
 Apply the manifest:
 
 ```
@@ -93,44 +56,6 @@ http://localhost:8080
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-```
-
-**Create custom values file:**
-
-**Path:** `infra/helm/postgresql/values.yaml`
-
-**Current content:**
-
-```
-global:
-  postgresql:
-    auth:
-      postgresPassword: "senha123"
-      username: "adminuser"
-      password: "adminpassword"
-      database: "projeto_sp"
-
-primary:
-  service:
-    ports:
-      postgresql: 5432
-
-  persistence:
-    enabled: false
-
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-
-volumePermissions:
-  enabled: true
-
-metrics:
-  enabled: false
 ```
 
 **Install PostgreSQL with Helm:**
