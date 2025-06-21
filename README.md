@@ -1,16 +1,16 @@
 
 # SP Public Safety Climate Project - Local Infrastructure Setup
 
-## ✅ Goal so far:
+## Goal so far:
 Set up a local Kubernetes development environment using Minikube and Docker as the driver. Create organized namespaces based on data layers (infra, bronze, silver, gold) and deploy basic services: **Nginx** and **PostgreSQL**.
 
-## ✅ Prerequisites:
+## Prerequisites:
 - Windows 10 with Docker Desktop installed and running
 - Minikube installed
 - Helm installed (v3 or newer)
 - kubectl configured and working
 
-## ✅ Step-by-step executed so far:
+## Step-by-step executed so far:
 
 ### 1. Start Minikube using Docker driver:
 
@@ -155,7 +155,7 @@ User: adminuser
 Password: adminpassword
 ```
 
-## ✅ Current project status:
+## Current project status:
 
 | Item        | Status   |
 |-------------|----------|
