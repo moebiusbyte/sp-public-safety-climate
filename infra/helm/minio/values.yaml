@@ -20,3 +20,12 @@ service:
   ports:
     api: 9000
     console: 9001
+
+service:
+  type: ClusterIP
+  ports:
+    api: 9000
+    console: 9001
+
+consoleService:
+  enabled: true
