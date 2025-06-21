@@ -1,0 +1,29 @@
+global:
+  postgresql:
+    auth:
+      postgresPassword: "senha123"        # Senha do usuário postgres
+      username: "adminuser"               # Nome de usuário adicional
+      password: "adminpassword"           # Senha desse usuário
+      database: "projeto_sp"              # Nome do database padrão
+
+primary:
+  service:
+    ports:
+      postgresql: 5432                    # Porta exposta no Service interno (ClusterIP)
+
+  persistence:
+    enabled: false                        # ⚠️ Desativado apenas para ambiente de desenvolvimento! Em produção, deixe como true e configure um PVC
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+volumePermissions:
+  enabled: true                           # Resolve problemas de permissão com PVCs (não vai ter efeito aqui pois o persistence está desativado)
+
+metrics:
+  enabled: false                          # Pode ativar se quiser monitoramento Prometheus no futuro
