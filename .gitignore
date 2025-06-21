@@ -1,0 +1,37 @@
+# Ignore .DS_Store files (MacOS)
+.DS_Store
+
+# Ignore Windows thumbs.db
+Thumbs.db
+
+# Ignore Python cache if scripts appear later
+__pycache__/
+*.pyc
+
+# Ignore Helm release data if generated locally
+*.tgz
+
+# Ignore sensitive YAML files (se criar secrets locais no futuro)
+infra/secrets/
+infra/helm/*/secrets.yaml
+
+# Ignore Minikube config (nunca versionar isso)
+~/.minikube/
+~/.kube/
+
+# Ignore generated logs
+logs/
+*.log
+
+# Ignore IDE/project configs
+.vscode/
+.idea/
+
+# Ignore system files
+*.swp
+*.bak
+*.tmp
+
+# Ignore virtual environments (se usar Python depois)
+venv/
+.env/
