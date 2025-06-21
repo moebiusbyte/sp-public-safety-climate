@@ -79,70 +79,88 @@ Database: projeto_sp
 User: adminuser
 Password: adminpassword
 ```
-## MinIO Deployment Details
+## MinIO deployment
 
-### 1. Helm Chart used:
+MinIO was deployed using Helm with a custom `values.yaml` file.  
+Port-forwarding is required to access both the S3 API and the MinIO Web Console.
 
-Bitnami MinIO chart
-
-### 2. Custom values.yaml used:
-
-**Path:** `infra/helm/minio/values.yaml`
-
-
-### 3. Installation command:
+### Port-forward for API (required for Terraform):
 
 ```
-helm install meu-minio bitnami/minio --namespace infra -f infra/helm/minio/values.yaml
+kubectl port-forward svc/meu-minio 9000:9000 -n infra
 ```
 
-Or if upgrading:
-
-```
-helm upgrade meu-minio bitnami/minio --namespace infra -f infra/helm/minio/values.yaml
-```
-
-### 4. Accessing MinIO Web Console:
-
-Forward port **9090**:
+### Port-forward for Web Console:
 
 ```
 kubectl port-forward pod/<minio-console-pod-name> 9090:9090 -n infra
 ```
 
-Example:
-
-```
-kubectl port-forward pod/meu-minio-console-xxxxxxx 9090:9090 -n infra
-```
-
-Then open:
+### Accessing the console:
 
 ```
 http://localhost:9090
 ```
 
-**Login credentials:**
+### Default credentials:
 
-- **Username:** `minioadmin`
-- **Password:** `minioadmin123`
+```
+- Username: minioadmin
+- Password: minioadmin123
+```
 
-You should now see the MinIO Object Store Console and be able to create buckets for your Bronze layer data storage.
+S3 buckets for the bronze, silver, and gold layers are being managed and created through Terraform.  
+Keep the port-forward for the API running when applying Terraform plans that interact with MinIO.
 
----
-## Next steps (suggestions):
+## Terraform Infrastructure Management
 
-- Create buckets (e.g., `bronze`, `silver`, `gold`)
-- Prepare Python scripts for data ingestion
-- Deploy Apache Airflow for orchestration
-- Begin loading public datasets into MinIO
+Infrastructure management for both Kubernetes resources and MinIO buckets is handled with Terraform.
+
+Directory structure:
+
+```
+infra/
+└── terraform/
+    ├── providers.tf
+    ├── backend.tf
+    ├── minio_buckets.tf
+    ├── k8s_namespaces.tf
+    └── variables.tf
+```
+
+Providers used:
+
+- Kubernetes Provider
+- Helm Provider
+- AWS Provider (configured to point to the local MinIO instance using the S3-compatible API)
+
+
+Managed resources:
+
+- Kubernetes namespaces (optional, currently created manually)
+- S3 buckets on MinIO for bronze, silver, and gold layers
+
+**Important:**
+The port-forwarding for the MinIO API (port 9000) must be active while applying Terraform plans that create or manage S3 buckets.
+
+Terraform commands:
+
+```
+terraform init
+terraform plan
+terraform apply
+```
 
 ## Current project status:
 
-| Item        | Status   |
-|-------------|----------|
-| Minikube    | ✅ Running |
-| Namespaces  | ✅ Created |
-| Nginx       | ✅ Deployed and tested |
-| PostgreSQL  | ✅ Deployed via Helm with custom values.yaml |
-| MinIO       | ✅ Deployed via Helm with web console accessible on port 9090 |
+| Item               | Status                                                        |
+|--------------------|---------------------------------------------------------------|
+| Minikube           |  Running                                                    |
+| Docker             |  Running                                                    |
+| Namespaces         |  Created                                                    |
+| Nginx              |  Deployed and accessible                                    |
+| PostgreSQL         |  Deployed via Helm with custom values.yaml                  |
+| MinIO              |  Deployed via Helm with web console accessible on port 9090 |
+| Terraform	         |  Initialized and managing MinIO buckets                     |
+| MinIO Buckets (S3) |  Managed via Terraform (bronze, silver, gold)               |
+| Port-forwarding    |  Required for PostgreSQL and MinIO API/Console              |
