@@ -2,24 +2,7 @@ auth:
   rootUser: "minioadmin"
   rootPassword: "minioadmin123"
 
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-
-persistence:
-  enabled: false  # Dev only - No volume
-
 mode: standalone
-
-service:
-  type: ClusterIP
-  ports:
-    api: 9000
-    console: 9001
 
 service:
   type: ClusterIP
@@ -33,3 +16,14 @@ consoleService:
 extraArgs:
   - --console-address
   - ":9001"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+persistence:
+  enabled: false
