@@ -12,7 +12,9 @@ primary:
       postgresql: 5432                    # Porta exposta no Service interno (ClusterIP)
 
   persistence:
-    enabled: false                        # ⚠️ Desativado apenas para ambiente de desenvolvimento! Em produção, deixe como true e configure um PVC
+    enabled: true
+    size: 8Gi
+    storageClass: standard
 
 resources:
   limits:
