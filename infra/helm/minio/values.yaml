@@ -26,4 +26,6 @@ resources:
     memory: 256Mi
 
 persistence:
-  enabled: false
+  enabled: true
+  size: 10Gi
+  storageClass: standard
